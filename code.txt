@@ -1,0 +1,43 @@
+#include <LiquidCrystal.h>
+const int rs = 13, en = 12, d4 = 11, d5 = 10, d6 = 9, d7 = 8;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+int eye=A4;
+int count=0;
+int buzzer=A0;
+int motor=A5;
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(eye,INPUT);pinMode(buzzer,OUTPUT);digitalWrite(buzzer,HIGH);
+  pinMode(motor,OUTPUT);digitalWrite(motor,LOW);
+ lcd.begin(16, 2);lcd.print("Anti Sleep ");
+ lcd.setCursor(0,1);lcd.print("Alarm System...");delay(1000);
+}
+
+void loop()
+{
+int val=digitalRead(eye);
+if(val==HIGH)
+{
+ count=count+1;delay(500);
+ lcd.clear();lcd.print("Count:");lcd.print(count);
+ digitalWrite(buzzer,LOW);delay(100);digitalWrite(buzzer,HIGH);delay(10);
+ if(count>=5)
+ {
+ count=0; 
+ lcd.clear();lcd.print("DROWSY ALERT...");delay(500);
+digitalWrite(motor,LOW);delay(100);
+ }
+}
+if(val==LOW)
+{
+ count=0;delay(100);
+ lcd.clear();lcd.print("No Problem"); 
+ digitalWrite(motor,HIGH);delay(10);
+}
+
+
+  
+ 
+  
+}
